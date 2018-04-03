@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1>Statistique</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ statistique.id }}</td>
+            </tr>
+            <tr>
+                <th>Totalusers</th>
+                <td>{{ statistique.totalUsers }}</td>
+            </tr>
+            <tr>
+                <th>Courseenrollments</th>
+                <td>{{ statistique.courseEnrollments }}</td>
+            </tr>
+            <tr>
+                <th>Courseenrollmentsnotstarted</th>
+                <td>{{ statistique.courseEnrollmentsNotStarted }}</td>
+            </tr>
+            <tr>
+                <th>Courseenrollmentsinprogress</th>
+                <td>{{ statistique.courseEnrollmentsInProgress }}</td>
+            </tr>
+            <tr>
+                <th>Courseenrollmentscompleted</th>
+                <td>{{ statistique.courseEnrollmentsCompleted }}</td>
+            </tr>
+            <tr>
+                <th>Courseenrollmentsexpired</th>
+                <td>{{ statistique.courseEnrollmentsExpired }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('statistique_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('statistique_edit', { 'id': statistique.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

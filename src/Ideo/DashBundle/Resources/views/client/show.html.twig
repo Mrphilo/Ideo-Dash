@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <section>
+        <a href="{{ path('client_index') }}">
+            <button type="button" class="btn btn-info btn-xs">
+                Retour à la liste des clients
+            </button>
+        </a>
+    </section>
+
+    <section class="content-header">
+        <h1>Visualisation du client : {{ client.nom }}</h1>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body">
+
+                        <div class="col-sm-5">Code</div>
+                        <div class="col-sm-7">{{ client.code }}</div>
+                        <br/>
+                        <br/>
+                        <div class="col-sm-5">Nom</div>
+                        <div class="col-sm-7">{{ client.nom }}</div>
+                        <br/>
+                        <br/>
+                        <div class="col-sm-5">Statut</div>
+                        <div class="col-sm-7">{{ client.status }}</div>
+                        <br/>
+                        <br/>
+                        <div class="col-sm-5">Nombre d'utilisateurs</div>
+                        <div class="col-sm-7">{{ client.totalUsers }}</div>
+                        <br/>
+                        <br/>
+                        <div class="col-sm-5">Nombre d'inscriptions</div>
+                        <div class="col-sm-7">{{ client.courseEnrollments }}</div>
+                        <br/>
+                        <br/>
+                        <div class="col-sm-5">Non démarré</div>
+                        <div class="col-sm-7">{{ client.courseEnrollmentsNotStarted }}</div>
+                        <br/>
+                        <br/>
+                        <div class="col-sm-5">En cours</div>
+                        <div class="col-sm-7">{{ client.courseEnrollmentsInProgress }}</div>
+                        <br/>
+                        <br/>
+                        <div class="col-sm-5">Terminé</div>
+                        <div class="col-sm-7">{{ client.courseEnrollmentsCompleted }}</div>
+                        <br/>
+                        <br/>
+                        <div class="col-sm-5">Expiré</div>
+                        <div class="col-sm-7">{{ client.courseEnrollmentsExpired }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if contrat is defined %}
+
+        <section class="content-header">
+            <h1>Infos Contrat</h1>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <div class="col-sm-5">Libellé</div>
+                            <div class="col-sm-7">{{ contrat.libelle }}</div>
+                            <br/>
+                            <br/>
+                            <div class="col-sm-5">Date de la signature du contrat</div>
+                            <div class="col-sm-7">{% if contrat.dateContrat %}{{ contrat.dateContrat|date('Y-m-d') }}{% endif %}</div>
+                            <br/>
+                            <br/>
+                            <div class="col-sm-5">Date du début du contrat</div>
+                            <div class="col-sm-7">{% if contrat.dateDebutContrat %}{{ contrat.dateDebutContrat|date('Y-m-d') }}{% endif %}</div>
+                            <br/>
+                            <br/>
+                            <div class="col-sm-5">Date de la fin du contrat</div>
+                            <div class="col-sm-7">{% if contrat.dateFinContrat %}{{ contrat.dateFinContrat|date('Y-m-d') }}{% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% else %}
+        <section>
+            <form method="POST" action="{{ path('client_affect', {'id': client.id}) }}">
+                <label for="contrat">Veuillez selectionner un contrat</label>
+                <select id="contrat" name="contrat">
+                    {% for contrat in contrats %}
+                        <option name="{{ contrat.libelle }}">{{ contrat.libelle }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" value="Créer" class="btn btn-success btn-xs">Affecter ce contrat</button>
+            </form>
+        </section>
+    {% endif %}
+
+    {% if service is defined %}
+        <section class="content-header">
+            <h1>Infos Services</h1>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <div class="col-sm-5">Libellé</div>
+                            <div class="col-sm-7">{{ service.libelle }}</div>
+                            <br/>
+                            <br/>
+                            <div class="col-sm-5">Soft skills</div>
+                            <div class="col-sm-7">{% if service.softSkills %}oui{% else %}non{% endif %}</div>
+                            <br/>
+                            <br/>
+                            <div class="col-sm-5">Sur mesure</div>
+                            <div class="col-sm-7">{% if service.surMesure %}oui{% else %}non{% endif %}</div>
+                            <br/>
+                            <br/>
+                            <div class="col-sm-5">Langue</div>
+                            <div class="col-sm-7">{% if service.langue %}oui{% else %}non{% endif %}</div>
+                            <br/>
+                            <br/>
+                            <div class="col-sm-5">Bureautique</div>
+                            <div class="col-sm-7">{% if service.bureautique %}oui{% else %}non{% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% else %}
+        <section>
+            <form method="POST" action="{{ path('client_affect', {'id': client.id}) }}">
+                <label for="service">Veuillez selectionner un service</label>
+                <select id="service" name="service">
+                    {% for service in services %}
+                        <option name="{{ service.libelle }}">{{ service.libelle }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" value="Créer" class="btn btn-success btn-xs">Affecter ce service</button>
+            </form>
+        </section>
+    {% endif %}
+
+    <ul>
+        <li>
+            <a href="{{ path('client_edit', { 'id': client.id }) }}">
+                <button type="button" class="btn btn-success btn-xs">Editer</button>
+            </a>
+        </li>
+    </ul>
+{% endblock %}

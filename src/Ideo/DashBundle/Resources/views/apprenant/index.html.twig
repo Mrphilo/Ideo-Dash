@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1>Apprenants list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Iduser</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Valid</th>
+                <th>Idclient</th>
+                <th>Idprojet</th>
+                <th>Gsm</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for apprenant in apprenants %}
+            <tr>
+                <td><a href="{{ path('apprenant_show', { 'id': apprenant.id }) }}">{{ apprenant.id }}</a></td>
+                <td>{{ apprenant.idUser }}</td>
+                <td>{{ apprenant.firstname }}</td>
+                <td>{{ apprenant.lastname }}</td>
+                <td>{{ apprenant.email }}</td>
+                <td>{% if apprenant.valid %}Yes{% else %}No{% endif %}</td>
+                <td>{{ apprenant.idClient }}</td>
+                <td>{{ apprenant.idProjet }}</td>
+                <td>{{ apprenant.gsm }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('apprenant_show', { 'id': apprenant.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('apprenant_edit', { 'id': apprenant.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('apprenant_new') }}">Create a new apprenant</a>
+        </li>
+    </ul>
+{% endblock %}
