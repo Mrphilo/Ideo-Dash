@@ -4,12 +4,12 @@ namespace Ideo\DashBundle\Controller;
 
 use Ideo\DashBundle\Entity\Client;
 use Ideo\DashBundle\Entity\Statistique;
+use Ideo\DashBundle\IdeoDashBundle;
 use Ideo\DashBundle\Service\DoceboApi;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-
 
 
 /**
@@ -129,7 +129,7 @@ class ClientController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $doceboApi = new DoceboApi();
+           /* $doceboApi = new DoceboApi();
             $auth = $doceboApi->getAuthorization();
             $pathapi = "/orgchart/createNode";
             $postfields="{
@@ -142,6 +142,8 @@ class ClientController extends Controller
             }";
             $response = $doceboApi->useDoceboApi($pathapi,$postfields,$auth);
             $id_org = $response['id_org'];
+           */
+            $id_org = 1111;
             $em = $this->getDoctrine()->getManager();
             $stat = new Statistique();
             $em->persist($stat);
@@ -171,8 +173,10 @@ class ClientController extends Controller
      */
     public function showAction(Client $client)
     {
-        $em = $this->getDoctrine()->getManager();
+
+        $em = $this->get('doctrine');
         $info_client_and_stats = $em->getRepository('Ideo\DashBundle\Entity\Client')->findClientInfoAndStatsById($client->getId());
+
         $services = $em->getRepository('Ideo\DashBundle\Entity\Service')->findAll();
         $contrats = $em->getRepository('Ideo\DashBundle\Entity\Contrat')->findAll();
 
@@ -184,7 +188,7 @@ class ClientController extends Controller
 
 
             return $this->render('IdeoDashBundle:Client:show.html.twig', array(
-                'client' => $info_client_and_stats,
+                'client' => $info_client_and_stats[0],
                 'service' => $service[0],
                 'contrat' => $contrat[0],
                 'services' => $services,
@@ -196,7 +200,7 @@ class ClientController extends Controller
             $contrat = $em->getRepository('Ideo\DashBundle\Entity\Contrat')->findContratById($client->getIdContrat());
 
             return $this->render('IdeoDashBundle:Client:show.html.twig', array(
-                'client' => $info_client_and_stats,
+                'client' => $info_client_and_stats[0],
                 'contrat' => $contrat[0],
                 'services' => $services,
                 'contrats' => $contrats,
@@ -207,7 +211,7 @@ class ClientController extends Controller
             $service = $em->getRepository('Ideo\DashBundle\Entity\Service')->findServiceById($client->getIdService());
 
             return $this->render('IdeoDashBundle:Client:show.html.twig', array(
-                'client' => $info_client_and_stats,
+                'client' => $info_client_and_stats[0],
                 'service' => $service[0],
                 'services' => $services,
                 'contrats' => $contrats,
@@ -216,7 +220,7 @@ class ClientController extends Controller
         else
         {
             return $this->render('IdeoDashBundle:Client:show.html.twig', array(
-                'client' => $info_client_and_stats,
+                'client' => $info_client_and_stats[0],
                 'services' => $services,
                 'contrats' => $contrats,
             ));
