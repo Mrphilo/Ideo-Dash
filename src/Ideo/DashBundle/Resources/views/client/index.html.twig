@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Liste des clients</h3>
+
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>Code</th>
+                            <th>Nom</th>
+                            <th>Statut</th>
+                            <th>Nombre d'utilisateurs</th>
+                            <th>Nombre d'inscriptions</th>
+                            <th>Non démarré</th>
+                            <th>En cours</th>
+                            <th>Terminé</th>
+                            <th>Expiré</th>
+                            <th>Actions</th>
+                        </tr>
+                        {% for client in clients %}
+                            <tr>
+                                <td>{{ client.code }}</td>
+                                <td>{{ client.nom }}</td>
+                                <td>{% if client.status %}Actif{% else %}Inactif{% endif %}</td>
+                                <td>{{ client.totalUsers }}</td>
+                                <td>{{ client.courseEnrollments }}</td>
+                                <td>{{ client.courseEnrollmentsNotStarted }}</td>
+                                <td>{{ client.courseEnrollmentsInProgress }}</td>
+                                <td>{{ client.courseEnrollmentsCompleted }}</td>
+                                <td>{{ client.courseEnrollmentsExpired }}</td>
+                                <td>
+                                    <a href="{{ path('client_show', { 'id': client.id }) }}">
+                                        <button type="button" class="btn btn-block btn-info btn-xs">Visualiser</button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ path('client_edit', { 'id': client.id }) }}">
+                                        <button type="button" class="btn btn-block btn-warning btn-xs">Editer</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+
+            </div>
+            <!-- /.box -->
+            <ul>
+                <li>
+                    <a href="{{ path('client_new') }}">
+                        <button type="button" class="btn btn-success btn-xs">Créer un nouveau client</button>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
+

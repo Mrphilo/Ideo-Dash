@@ -1,0 +1,9 @@
+ideo_dash:
+    resource: "@IdeoDashBundle/Controller/"
+    type:     annotation
+    prefix:   /Ideo
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+    prefix: /

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1>Contrat</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ contrat.id }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ contrat.libelle }}</td>
+            </tr>
+            <tr>
+                <th>Datecontrat</th>
+                <td>{% if contrat.dateContrat %}{{ contrat.dateContrat|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Datedebutcontrat</th>
+                <td>{% if contrat.dateDebutContrat %}{{ contrat.dateDebutContrat|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Datefincontrat</th>
+                <td>{% if contrat.dateFinContrat %}{{ contrat.dateFinContrat|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('contrat_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('contrat_edit', { 'id': contrat.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

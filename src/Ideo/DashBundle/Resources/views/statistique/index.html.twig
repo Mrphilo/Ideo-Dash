@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1>Statistiques list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Totalusers</th>
+                <th>Courseenrollments</th>
+                <th>Courseenrollmentsnotstarted</th>
+                <th>Courseenrollmentsinprogress</th>
+                <th>Courseenrollmentscompleted</th>
+                <th>Courseenrollmentsexpired</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for statistique in statistiques %}
+            <tr>
+                <td><a href="{{ path('statistique_show', { 'id': statistique.id }) }}">{{ statistique.id }}</a></td>
+                <td>{{ statistique.totalUsers }}</td>
+                <td>{{ statistique.courseEnrollments }}</td>
+                <td>{{ statistique.courseEnrollmentsNotStarted }}</td>
+                <td>{{ statistique.courseEnrollmentsInProgress }}</td>
+                <td>{{ statistique.courseEnrollmentsCompleted }}</td>
+                <td>{{ statistique.courseEnrollmentsExpired }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('statistique_show', { 'id': statistique.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('statistique_edit', { 'id': statistique.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('statistique_new') }}">Create a new statistique</a>
+        </li>
+    </ul>
+{% endblock %}

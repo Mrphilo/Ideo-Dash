@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1>Contrats list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle</th>
+                <th>Datecontrat</th>
+                <th>Datedebutcontrat</th>
+                <th>Datefincontrat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contrat in contrats %}
+            <tr>
+                <td><a href="{{ path('contrat_show', { 'id': contrat.id }) }}">{{ contrat.id }}</a></td>
+                <td>{{ contrat.libelle }}</td>
+                <td>{% if contrat.dateContrat %}{{ contrat.dateContrat|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if contrat.dateDebutContrat %}{{ contrat.dateDebutContrat|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if contrat.dateFinContrat %}{{ contrat.dateFinContrat|date('Y-m-d') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('contrat_show', { 'id': contrat.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('contrat_edit', { 'id': contrat.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('contrat_new') }}">Create a new contrat</a>
+        </li>
+    </ul>
+{% endblock %}
