@@ -1,17 +1,76 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <h1>Client edit</h1>
+    <section class="content-header">
+        <h1> Ajouter un client </h1>
+    </section>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Formulaire client</h3>
+                    </div>
+
+                    <div class="box-body">
+                        {{ form_start(form) }}
+                        <div class="form-group">
+                            Code
+                            {{ form_widget(form.code, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            Nom
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_widget(form.status) }}
+                            Statut ( cocher si actif )
+                        </div>
+
+                        <div align="right">
+                            <input type="submit" value="Modifier le client" />
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <form method="POST" action="{{ path('client_affect', {'id': client.id}) }}">
+            <label for="contrat">Veuillez selectionner un contrat</label>
+            <select id="contrat" name="contrat">
+                {% for contrat in contrats %}
+                    <option name="{{ contrat.libelle }}">{{ contrat.libelle }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" value="Créer" class="btn btn-success btn-xs">Affecter ce contrat</button>
+        </form>
+    </section>
+
+    <section>
+        <form method="POST" action="{{ path('client_affect', {'id': client.id}) }}">
+            <label for="service">Veuillez selectionner un service</label>
+            <select id="service" name="service">
+                {% for service in services %}
+                    <option name="{{ service.libelle }}">{{ service.libelle }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" value="Créer" class="btn btn-success btn-xs">Affecter ce service</button>
+        </form>
+    </section>
+
+    <section>
+        <a href="{{ path('client_index') }}">
+            <button type="button" class="btn btn-info btn-xs">
+                Liste des clients
+            </button>
+        </a>
+    </section>
 
     <ul>
-        <li>
-            <a href="{{ path('client_index') }}">Back to the list</a>
-        </li>
         <li>
             {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">

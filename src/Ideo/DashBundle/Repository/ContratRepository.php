@@ -12,7 +12,7 @@ class ContratRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findContratById($id)
     {
-        $requete = $this->getEntityManager()->createQuery('SELECT c FROM AppBundle:contrat c WHERE c.id = ?1');
+        $requete = $this->getEntityManager()->createQuery('SELECT c FROM IdeoDashBundle:contrat c WHERE c.id = ?1');
         $requete->setParameter(1,$id);
         return $requete->getResult();
     }
