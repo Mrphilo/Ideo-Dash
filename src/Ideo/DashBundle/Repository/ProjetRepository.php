@@ -10,4 +10,60 @@ namespace Ideo\DashBundle\Repository;
  */
 class ProjetRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findProjetInfoAndStats()
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT c.id, c.idProjet, c.code, c.nom, c.dateLancement, c.dateFin, c.effectifPrevu,
+                      c.clientId, c.idStat, s.totalUsers, s.courseEnrollments,
+                      s.courseEnrollmentsNotStarted, s.courseEnrollmentsInProgress,
+                       s.courseEnrollmentsCompleted, s.courseEnrollmentsExpired
+                        FROM IdeoDashBundle:projet c, IdeoDashBundle:Statistique s WHERE c.idStat = s.id'
+            )
+            ->getResult();
+    }
+
+    public function findIdStatById($org)
+    {
+        $requete = $this->getEntityManager()
+            ->createQuery('SELECT c.idStat FROM IdeoDashBundle:projet c WHERE c.idProjet = ?1') ;
+
+        $requete->setParameter(1,$org);
+
+        return $requete->getResult();
+    }
+
+    public function updateProjetStats($id_stat,$tu,$ce,$cens,$ceip,$cec,$cee)
+    {
+        $requete = $this->getEntityManager()
+            ->createQuery('UPDATE IdeoDashBundle:Statistique s SET s.totalUsers = :tu, s.courseEnrollments = :ce,
+            s.courseEnrollmentsNotStarted = :cens, s.courseEnrollmentsInProgress = :ceip, 
+            s.courseEnrollmentsCompleted = :cec, s.courseEnrollmentsExpired = :cee WHERE s.id = :idStat');
+
+        $requete->setParameters(array(
+            'tu' => $tu,
+            'ce' => $ce,
+            'cens' => $cens,
+            'ceip' => $ceip,
+            'cec' => $cec,
+            'cee' => $cee,
+            'idStat' => $id_stat,
+        ));
+        return $requete->getResult();
+    }
+
+    public function findProjetInfoAndStatsById($id)
+    {
+        $requete = $this->getEntityManager()
+            ->createQuery(
+                'SELECT c.id, c.code, c.nom, c.dateLancement, c.dateFin, c.effectifPrevu, s.totalUsers, s.courseEnrollments,
+                      s.courseEnrollmentsNotStarted, s.courseEnrollmentsInProgress,
+                       s.courseEnrollmentsCompleted, s.courseEnrollmentsExpired
+                        FROM IdeoDashBundle:client c, IdeoDashBundle:Statistique s WHERE c.idStat = s.id and c.id = ?1'
+            );
+
+        $requete->setParameter(1 , $id);
+
+        return $requete->getResult();
+    }
 }

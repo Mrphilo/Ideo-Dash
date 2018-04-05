@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block page_name %}Choix du client{% endblock %}
+{% block content %}
+
+    <section>
+        <a href="{{ path('projet_list') }}">
+            <button type="button" class="btn btn-info btn-xs">
+                Aller à la liste des projets
+            </button>
+        </a>
+    </section>
+
+    <section>
+        <form method="POST" action="{{ path('projet_new') }}">
+            <label for="clients">Veuillez selectionner un client pour y ajouter un projet</label>
+            <select id="clients" name="clients">
+                {% for client in clients %}
+                    <option name="{{ client.nom }}">{{ client.nom }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" value="Créer" class="btn btn-success btn-xs">Choisir ce client</button>
+        </form>
+    </section>
+
+{% endblock %}

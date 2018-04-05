@@ -4,6 +4,7 @@ namespace Ideo\DashBundle\Controller;
 
 use Ideo\DashBundle\Entity\Client;
 use Ideo\DashBundle\Entity\Statistique;
+
 use Ideo\DashBundle\Service\DoceboApi;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -23,10 +24,10 @@ class ClientController extends Controller
     /**
      * Updates Client and Statistique entities.
      *
-     * @Route("/update", name="client_update")
+     * @Route("/Update-la-liste-des-Clients", name="client_update")
      * @Method({"GET", "POST"})
      */
-    public function updateDbAction(Request $request)
+    public function updateDbAction()
     {
         $doceboApi = new DoceboApi();
         $auth = $doceboApi->getAuthorization();
@@ -35,7 +36,7 @@ class ClientController extends Controller
         $children_array = $doceboApi->useDoceboApi($pathapi,$postfields,$auth);
         $children = $children_array['children'];
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
         $pathapi = "/orgchart/stats";
 
@@ -100,7 +101,7 @@ class ClientController extends Controller
     /**
      * Lists all client entities.
      *
-     * @Route("/", name="client_index")
+     * @Route("/liste-des-clients", name="client_list")
      * @Method("GET")
      */
     public function indexAction()
@@ -142,13 +143,14 @@ class ClientController extends Controller
             $response = $doceboApi->useDoceboApi($pathapi,$postfields,$auth);
             $id_org = $response['id_org'];
 
-            $em = $this->get('doctrine');
+            $em = $this->getDoctrine()->getManager();
             $stat = new Statistique();
             $em->persist($stat);
             $em->flush();
 
             $client->setIdStat($stat->getId());
             $client->setIdOrg($id_org);
+
 
             $em->persist($client);
             $em->flush();
@@ -170,6 +172,7 @@ class ClientController extends Controller
      */
     public function showAction(Client $client)
     {
+
         $em = $this->get('doctrine.orm.entity_manager');
         $info_client_and_stats = $em->getRepository('Ideo\DashBundle\Entity\Client')->findClientInfoAndStatsById($client->getId());
 
@@ -231,10 +234,6 @@ class ClientController extends Controller
      */
     public function editAction(Request $request, Client $client)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $services = $em->getRepository('Ideo\DashBundle\Entity\Service')->findAll();
-        $contrats = $em->getRepository('Ideo\DashBundle\Entity\Contrat')->findAll();
-
         $deleteForm = $this->createDeleteForm($client);
         $editForm = $this->createForm('Ideo\DashBundle\Form\ClientType', $client);
         $editForm->handleRequest($request);
@@ -247,10 +246,8 @@ class ClientController extends Controller
 
         return $this->render('IdeoDashBundle:Client:edit.html.twig', array(
             'client' => $client,
-            'form' => $editForm->createView(),
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-            'contrats' => $contrats,
-            'services' => $services
         ));
     }
 
@@ -362,7 +359,7 @@ class ClientController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('client_index');
+        return $this->redirectToRoute('client_list');
     }
 
     /**

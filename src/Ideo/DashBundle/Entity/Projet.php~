@@ -287,28 +287,5 @@ class Projet
     {
         return $this->idStat;
     }
-
-    /**
-     * Set client
-     *
-     * @param \Ideo\DashBundle\Entity\Client $client
-     *
-     * @return Projet
-     */
-    public function setClient(\Ideo\DashBundle\Entity\Client $client = null)
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-
-    /**
-     * Get client
-     *
-     * @return \Ideo\DashBundle\Entity\Client
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
 }
+
